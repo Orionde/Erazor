@@ -1,0 +1,10 @@
+a0       PERC H800 Adapter        bios:3.18.00_4.09.05. fw:2.100.03-4651 encl:1 ldrv:0  rbld:30% mem:1024MiB batt:good/4069mV/28C
+unconfigured:  a0e9s0  
+a0e9s0    HITACHI HUC106030CSS600  rev:A360 s/n:PWJ045UD                279GiB        ready    errs: media:0  other:3
+
+a1       PERC 6/i Integrated      bios:2.04.00 fw:1.22.12-0952 encl:1 ldrv:1  rbld:30% mem:256MiB batt:FAULT, module missing, pack missing, charge failed/0mV/0C
+a1d0       136GiB RAID 1   1x2  optimal
+      row  0:  a1e32s0   a1e32s1 
+a1e32s0   SEAGATE ST9146852SS      rev:HT64 s/n:6TB1ZSTZ                136GiB  a1d0  online  
+a1e32s1   SEAGATE ST9146852SS      rev:HT65 s/n:6TB2Y2BB                136GiB  a1d0  online  
+
