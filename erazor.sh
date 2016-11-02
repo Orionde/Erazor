@@ -71,11 +71,8 @@ else
 
 			listID=$(set_new_disks_online) # Set the news disks online and get their IDs
 			megasasctl -vvv > $MEGA_NEW 2> /dev/null # Need to do it again : disk pass online
-			echo "1"
 			fdisk -l | grep -v $ID_SYS_DISK | grep sd | awk '{print $2}' | tr -d ':' > $FDISK_NEW
-			echo "2"
 			listSD=$(diff $FDISK_OLD $FDISK_NEW | grep ">" | awk '{print $2}')
-			echo "3"
 			arrSD=($listSD)
 			indice=0
 				
