@@ -24,9 +24,10 @@ eraze_disk () {
 	then
 		echo "Erazing disk $1 ($SD_ID)..."
 		shred -z -v -n 0 $SD_ID
-		megacli -PDOffline -PhysDrv [$IDE:$1] -a0
-		megacli -PDMarkMissing -PhysDrv [$IDE:$1] -a0 
-		megacli -PDPrpRmv -PhysDrv [$IDE:$1] -a0
+		#megacli -PDOffline -PhysDrv [$IDE:$1] -a0
+		#megacli -PDMarkMissing -PhysDrv [$IDE:$1] -a0 
+		#megacli -PDPrpRmv -PhysDrv [$IDE:$1] -a0
+		( ./offline_disk $1 ) &
 		echo "FINISH for Disk $1 !"
 	else
 		echo "Disk $1 not on the good RAID"
@@ -37,7 +38,7 @@ eraze_disk () {
 ## In : nothing
 ## Out : list of new disks ID (getted with megacli)
 set_new_disks_online () {
-	IDE=$(megacli -PDList -a0 | grep "Enclosure Device ID:" | awk '{print $4}' | sort | uniq) # Enclosure device ID
+	IDE=$(megacli -PDList -a$ID_RAID | grep "Enclosure Device ID:" | awk '{print $4}' | sort | uniq) # Enclosure device ID
 	megacli -PDList -a0 | grep "Slot Number" | awk '{print $3}' > $ID_NEW  # Get actual references of disks
 	NewIDs=$(diff $ID_NEW $ID_OLD | grep "<" | awk '{print $2}')           # Get the NEW references : diff with old
 	
@@ -58,6 +59,7 @@ if (( $# != 2 )); then
 	echo " DISK_SYS is the ID of the disk where your system is installed (/dev/sda, maybe)"
 	echo " Example of usage : ./erazor 0 /dev/sda"
 else
+	./reinit_file_status.sh
 	while :
 	do
 		megasasctl -vvv > $MEGA_NEW 2> /dev/null # initialize file $MEGA_NEW
@@ -71,11 +73,8 @@ else
 
 			listID=$(set_new_disks_online) # Set the news disks online and get their IDs
 			megasasctl -vvv > $MEGA_NEW 2> /dev/null # Need to do it again : disk pass online
-			echo "1"
 			fdisk -l | grep -v $ID_SYS_DISK | grep sd | awk '{print $2}' | tr -d ':' > $FDISK_NEW
-			echo "2"
 			listSD=$(diff $FDISK_OLD $FDISK_NEW | grep ">" | awk '{print $2}')
-			echo "3"
 			arrSD=($listSD)
 			indice=0
 				
