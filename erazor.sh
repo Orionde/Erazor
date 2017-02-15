@@ -19,7 +19,7 @@ function install_megacli {
                 echo "deb http://hwraid.le-vert.net/debian jessie main" >> /etc/apt/sources.list
                 wget -O - https://hwaid.le-vert.net/debian/hwraid.le-vert.net.gpg.key | apt-key add -
                 apt-get update
-                apt-get install megacli -y
+                apt-get install megacli -y --force-yes
         fi
         echo "MegaCli OK !"
 }
@@ -31,6 +31,7 @@ function online_disks {
 }
 
 ## Main
+rm log.txt
 install_megacli
 online_disks
 online_disks
