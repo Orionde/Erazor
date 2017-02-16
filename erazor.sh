@@ -20,6 +20,7 @@ function install_megacli {
                 wget -O - https://hwaid.le-vert.net/debian/hwraid.le-vert.net.gpg.key | apt-key add -
                 apt-get update
                 apt-get install megacli -y --force-yes
+                apt-get install megactl -y --force-yes
         fi
         echo "MegaCli OK !"
 }
@@ -40,9 +41,4 @@ disks=$(fdisk -l | egrep -o '\/dev\/sd[a-z]' | sort | uniq)
 
 for d in $disks; do
         ( eraze_disk $d ) &
-done
-
-while :
-do
-        sleep 10
 done
