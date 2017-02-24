@@ -10,7 +10,7 @@ function eraze_disk {
 }
 
 
-function install_megacli {
+function install_mega {
 ## Add repositoy, get key and install megacli if not present
 
         present=$(grep 'deb http://hwraid.le-vert.net/debian jessie main' /etc/apt/sources.list)
@@ -31,14 +31,28 @@ function online_disks {
         megacli -CfgEachDskRaid0 WB RA Direct CachedBadBBu -aALL
 }
 
-## Main
+## Main #######################################################################################################
+
+# rm old log files
 rm log.txt
-install_megacli
-online_disks
+rm MegaSAS.log
+
+# install RAID packages and set disks in RAID 0
+install_mega
 online_disks
 
+# Assure all disks are mounted by Linux
+sleep 15
+
+# Get all Linux disks IDs
 disks=$(fdisk -l | egrep -o '\/dev\/sd[a-z]' | sort | uniq)
 
+# Print getted disks IDs
+echo "--------------------------------------------------------------------------------------------------------"
+echo "Disks : $disks"
+echo "--------------------------------------------------------------------------------------------------------"
+
+# Eraze all disks in separeted processus
 for d in $disks; do
         ( eraze_disk $d ) &
 done
