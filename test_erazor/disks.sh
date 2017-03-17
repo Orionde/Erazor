@@ -6,13 +6,17 @@ declare -A disks_infos
 function get_info() {
 	local IFS=':'
 	data=$(cat b)
+	rm b
 	for line in $data; do
-		#echo $line
-		
 		local IFS=' \\t'
 		read typ siz <<< "$line"
 		if [[ ! -z "${typ// }"  ]]; then
-			echo "$typ $siz" >> disks.tkt
+			if [[ $typ == "ATA" ]]; then
+				echo "SATA $siz" >> disks.txt
+			else
+				echo "$typ $siz" >> disks.txt
+
+			fi
 		fi
 
 	done
@@ -38,4 +42,3 @@ function gen_file() {
 
 gen_file
 get_info
-rm b
