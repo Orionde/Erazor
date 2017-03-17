@@ -22,6 +22,8 @@ function send_notifs {
 	message='Test'
 	json_data='{"color":"red","message":"'$message'","notify":false,"message_format":"text"}'
 	curl -d "$json_data" -H 'Content-Type: application/json' https://hipchat.oxalide.net/v2/user/emmanuel.clisson@oxalide.com/message?auth_token=0AdJAy8Nd9d9lblqFyk1Ty74YOjFkot1ULZWQSBC
+	bash disks.sh
+	bash test_mail.sh
 	
 	echo "OK !"
 }
@@ -31,7 +33,8 @@ function eraze_disk {
         echo "Erazing disk $1" >> log.txt
         echo "Erazing disk $1"
         #shred -z -v -n 0 $1
-		shred -zvn 0 /dev/sdb
+		#shred -zvn 0 /dev/sdb
+		sleep 10
         echo "Finish for disk $1" >> log.txt
         echo -e "${GREEN}Finish for disk $1${NO_COLOR}"
 }
@@ -71,8 +74,9 @@ function online_disks {
 ## Main #######################################################################################################
 
 # rm old log files
-rm log.txt
-rm MegaSAS.log
+rm log.txt 2> /dev/null
+rm MegaSAS.log 2> /dev/null
+rm disks.txt 2> /dev/null
 
 # install RAID packages and set disks in RAID 0
 #install_dependencies
@@ -88,12 +92,13 @@ echo -e "Disks :\n$disks"
 echo "--------------------------------------------------------------------------------------------------------"
 
 # Eraze all disks in separeted processus
-#for d in $disks; do
-#        ( eraze_disk $d ) &
-#done
+for d in $disks; do
+        ( eraze_disk $d ) &
+done
 
 wait # Wait for all processus
 
 send_notifs
 
 echo -e "${GREEN}FINISH !${NO_COLOR}"
+

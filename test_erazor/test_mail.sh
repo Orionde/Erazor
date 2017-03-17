@@ -1,12 +1,6 @@
-#from=$1
-#to=$2
-#data=$3
-#domaine=$4
-#host=$(hostname)
-
 from="jorane.congio@oxalide.com"
-to="jorane.congio@oxalide.com"
-data=$(cat disks.txt)
+to="datacenter@pilot.oxalide.com"
+data=$(cat disks.txt | sort | uniq -c)
 domaine=10.1.71.103
 host=$(hostname)
 
@@ -34,7 +28,10 @@ host=$(hostname)
 
 	 echo ""
 	 
-	 echo "$data"
+	 echo -e "Bonjour,\n\n    Voici le rapport des disques effacés ce jour :"
+	 sleep 2
+
+	 echo -e "$data\n\nCordialement,"
 	 sleep 2
 	 
 	 echo
@@ -43,4 +40,4 @@ host=$(hostname)
 	 echo "."
 	 sleep 2
 	 
- ) | telnet $domaine 25
+) | telnet $domaine 25
