@@ -1,5 +1,5 @@
 from="jorane.congio@oxalide.com"
-to="datacenter@pilot.oxalide.com"
+to="jorane.congio@oxalide.com"
 data=$(cat disks.txt | sort | uniq -c)
 domaine=10.1.71.103
 host=$(hostname)

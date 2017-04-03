@@ -7,7 +7,6 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NO_COLOR='\033[0m'
 
-
 ## If erazor is killed by Ctrl + C, kill all shred processus
 function on_exit() {
 	echo -e "\n${RED}Killing all shred...${NO_COLOR}"
@@ -22,10 +21,6 @@ function send_notifs {
 	message='Test'
 	json_data='{"color":"red","message":"'$message'","notify":false,"message_format":"text"}'
 	curl -d "$json_data" -H 'Content-Type: application/json' https://hipchat.oxalide.net/v2/user/emmanuel.clisson@oxalide.com/message?auth_token=0AdJAy8Nd9d9lblqFyk1Ty74YOjFkot1ULZWQSBC
-	bash disks.sh
-	bash test_mail.sh
-	
-	echo "OK !"
 }
 
 ## Use shred on given Disk ID (ex. : /dev/sdb)
@@ -40,15 +35,13 @@ function eraze_disk {
 }
 
 
-## Install RAID utilities
+## Install utilities
 function install_dependencies {
-## Add repositoy, get key and install megacli if not present
 
         present=$(grep 'deb http://hwraid.le-vert.net/debian jessie main' /etc/apt/sources.list)
 
         if [[ -z $present ]]; then
                 echo "deb http://hwraid.le-vert.net/debian jessie main" >> /etc/apt/sources.list
-                wget -O - https://hwaid.le-vert.net/debian/hwraid.le-vert.net.gpg.key | apt-key add -
                 apt-get update
                 apt-get install megacli -y --force-yes
                 apt-get install megactl -y --force-yes
@@ -68,7 +61,6 @@ function online_disks {
         megacli -CfgEachDskRaid0 WB RA Direct CachedBadBBu -a0
         megacli -CfgEachDskRaid0 WB RA Direct CachedBadBBu -a1
 		sleep 25 # Assure all disks are mounted by Linux
-
 }
 
 ## Main #######################################################################################################
@@ -98,7 +90,11 @@ done
 
 wait # Wait for all processus
 
-send_notifs
+#send_notifs # Send HipChat notifications
+bash disks.sh # Generate disks infos
+bash test_mail.sh # Send mail with disks informations
+	
+echo "OK !"
 
 echo -e "${GREEN}FINISH !${NO_COLOR}"
 
