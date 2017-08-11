@@ -71,12 +71,12 @@ rm MegaSAS.log 2> /dev/null
 rm disks.txt 2> /dev/null
 
 # install RAID packages and set disks in RAID 0
-#install_dependencies
-#online_disks
+install_dependencies
+online_disks
 
 # Get all Linux disks IDs
-#disks=$(fdisk -l | egrep -o '\/dev\/sd[a-z]' | sort | uniq)
-disks='/dev/sdb'
+disks=$(fdisk -l | egrep -o '\/dev\/sd[a-z]' | sort | uniq)
+#disks='/dev/sdb'
 
 # Print getted disks IDs
 echo "--------------------------------------------------------------------------------------------------------"
@@ -90,7 +90,7 @@ done
 
 wait # Wait for all processus
 
-#send_notifs # Send HipChat notifications
+send_notifs # Send HipChat notifications
 bash disks.sh # Generate disks infos
 bash test_mail.sh # Send mail with disks informations
 	
