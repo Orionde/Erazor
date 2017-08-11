@@ -86,7 +86,6 @@ online_disks
 
 # Get all Linux disks IDs
 disks=$(fdisk -l | egrep -o '\/dev\/sd[a-z]' | sort | uniq)
-#disks='/dev/sdb'
 
 # Print getted disks IDs
 echo "--------------------------------------------------------------------------------------------------------"
@@ -102,7 +101,7 @@ wait # Wait for all processus
 
 send_notifs # Send HipChat notifications
 bash disks.sh # Generate disks infos
-bash test_mail.sh # Send mail with disks informations
+#bash test_mail.sh # Send mail with disks informations
 	
 echo "OK !"
 
