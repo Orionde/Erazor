@@ -52,6 +52,16 @@ function install_dependencies {
 	if [[ $? == 1 ]]; then
 		apt-get install hdparm -y --force-yes
 	fi
+	
+	which lshw > /dev/null
+	if [[ $? == 1 ]]; then
+		apt-get install lshw -y --force-yes
+	fi
+	
+	which curl > /dev/null
+	if [[ $? == 1 ]]; then
+		apt-get install curl -y --force-yes
+	fi
 }
 
 ## Mount disks : each disk is configured in RAID 0
