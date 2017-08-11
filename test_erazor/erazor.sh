@@ -27,9 +27,9 @@ function send_notifs {
 function eraze_disk {
         echo "Erazing disk $1" >> log.txt
         echo "Erazing disk $1"
-        #shred -z -v -n 0 $1
-		#shred -zvn 0 /dev/sdb
-		sleep 10
+        shred -z -v -n 0 $1
+	shred -zvn 0 /dev/sdb
+	sleep 10
         echo "Finish for disk $1" >> log.txt
         echo -e "${GREEN}Finish for disk $1${NO_COLOR}"
 }
@@ -48,10 +48,10 @@ function install_dependencies {
         fi
         echo "MegaCli OK !"
 		
-		which hdparm > /dev/null
-		if [[ $? == 1 ]]; then
-			apt-get install hdparm -y --force-yes
-		fi
+	which hdparm > /dev/null
+	if [[ $? == 1 ]]; then
+		apt-get install hdparm -y --force-yes
+	fi
 }
 
 ## Mount disks : each disk is configured in RAID 0
