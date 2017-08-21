@@ -27,8 +27,7 @@ function send_notifs {
 function eraze_disk {
         echo "Erazing disk $1" >> log.txt
         echo "Erazing disk $1"
-        shred -z -v -n 0 $1
-	shred -zvn 0 /dev/sdb
+        shred -zvn 0 $1
 	sleep 10
         echo "Finish for disk $1" >> log.txt
         echo -e "${GREEN}Finish for disk $1${NO_COLOR}"
