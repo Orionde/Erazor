@@ -1,0 +1,2 @@
+SATA 8GiB
+SATA 10GiB
