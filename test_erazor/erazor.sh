@@ -41,6 +41,7 @@ function install_dependencies {
 
         if [[ -z $present ]]; then
                 echo "deb http://hwraid.le-vert.net/debian jessie main" >> /etc/apt/sources.list
+		wget -O - http://hwraid.le-vert.net/debian/hwraid.le-vert.net.gpg.key | sudo apt-key add - 
                 apt-get update
                 apt-get install megacli -y --force-yes
                 apt-get install megactl -y --force-yes
