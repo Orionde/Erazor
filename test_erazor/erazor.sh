@@ -14,15 +14,6 @@ function on_exit() {
 	echo -e "${GREEN}OK !${NO_COLOR}"
 }
 
-## Send notif when erazing finished
-function send_notifs {
-	echo -n "Sending notifs... "
-
-	message='Test'
-	json_data='{"color":"red","message":"'$message'","notify":false,"message_format":"text"}'
-	curl -d "$json_data" -H 'Content-Type: application/json' https://hipchat.oxalide.net/v2/user/emmanuel.clisson@oxalide.com/message?auth_token=0AdJAy8Nd9d9lblqFyk1Ty74YOjFkot1ULZWQSBC
-}
-
 ## Use shred on given Disk ID (ex. : /dev/sdb)
 function eraze_disk {
         echo "Erazing disk $1" >> log.txt
@@ -99,7 +90,6 @@ done
 
 wait # Wait for all processus
 
-send_notifs # Send HipChat notifications
 bash disks.sh # Generate disks infos
 #bash test_mail.sh # Send mail with disks informations
 	
